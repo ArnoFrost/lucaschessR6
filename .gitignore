@@ -1,2 +1,9 @@
 UserData/
-
+venv/
+__pycache__/
+*.pyc
+bin/_fastercode/src/build/
+bin/_fastercode/src/libirina.a
+bin/_fastercode/src/FasterCode.c
+bin/_fastercode/src/FasterCode.pyx
+bin/_fastercode/src/FasterCode*.so

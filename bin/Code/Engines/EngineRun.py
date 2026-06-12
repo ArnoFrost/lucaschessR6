@@ -164,7 +164,7 @@ class EngineRun(QtCore.QObject):
         self.process.setWorkingDirectory(os.path.dirname(path_exe))
         args = self.config.args or []
 
-        if Util.is_linux():
+        if Util.is_unix():
             if os.path.isfile(path_exe) and not os.access(path_exe, os.X_OK):
                 import stat
                 try:

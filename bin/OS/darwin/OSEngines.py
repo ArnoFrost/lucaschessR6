@@ -1,0 +1,54 @@
+import os
+import stat
+
+import FasterCode
+
+from Code.Base.Constantes import ENG_INTERNAL
+from Code.Engines import Engines
+from Code.Z import Util
+
+
+def read_engines(folder_engines):
+    dic_engines = {}
+
+    def mas(clave, autor, version, url, exe, elo, folder=None, nodes_compatible=None):
+        if folder is None:
+            folder = clave
+        path_exe = Util.opj(folder_engines, folder, exe)
+        engine = Engines.Engine(
+            clave,
+            autor,
+            version,
+            url,
+            path_exe,
+        )
+        if os.path.isfile(path_exe) and not os.access(path_exe, os.X_OK):
+            os.chmod(path_exe, os.stat(path_exe).st_mode | stat.S_IXUSR)
+        engine.set_type(ENG_INTERNAL)
+        engine.elo = elo
+        engine.set_uci_option("Log", "false")
+        engine.set_uci_option("Ponder", "false")
+        engine.set_uci_option("Hash", "16")
+        engine.set_uci_option("Threads", "1")
+        dic_engines[clave] = engine
+        if nodes_compatible is not None:
+            engine.set_nodes_compatible(nodes_compatible)
+        return engine
+
+    cm = mas(
+        "stockfish",
+        "Tord Romstad, Marco Costalba, Joona Kiiski",
+        "18",
+        "https://stockfishchess.org/",
+        "stockfish",
+        3700,
+    )
+    cm.set_uci_option("Hash", "64")
+    cm.set_uci_option("Threads", "2")
+    cm.set_multipv(10, 256)
+
+    return dic_engines
+
+
+def li_engines_fixed_elo() -> tuple:
+    return (("stockfish", 1400, 3100),)

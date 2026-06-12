@@ -41,6 +41,9 @@ class StockfishManager:
         return self._cpu_flags
 
     def check(self, check_again: bool = False) -> bool:
+        if Util.is_macos():
+            return True
+
         conf = self._get_stockfish_config()
         if not conf:
             return True
@@ -100,6 +103,9 @@ class StockfishManager:
     def _read_versions(conf) -> List[str]:
         folder = os.path.dirname(conf.path_exe)
         path = Util.opj(folder, "versions.txt")
+
+        if not os.path.isfile(path):
+            return []
 
         with open(path, "rt") as f:
             return [line.strip() for line in f if "x86-64" in line]

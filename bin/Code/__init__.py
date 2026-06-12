@@ -16,7 +16,7 @@ if current_dir:
 
 lucas_chess: Optional[str] = None  # asignado en Translate
 
-platform = "win32" if sys.platform == "win32" else "linux"
+platform = "win32" if sys.platform == "win32" else "darwin" if sys.platform == "darwin" else "linux"
 
 folder_os = Util.opj(current_dir, "OS", platform)
 sys.path.insert(0, folder_os)
@@ -48,7 +48,12 @@ tbookPTZ = path_resource("Openings", "fics15.bin")
 tbookI = path_resource("Openings", "irina.bin")
 manager_tutor = None
 
-font_mono = "Courier New" if Util.is_windows() else "Mono"
+if Util.is_windows():
+    font_mono = "Courier New"
+elif Util.is_macos():
+    font_mono = "Menlo"
+else:
+    font_mono = "Mono"
 
 list_engine_managers = None
 

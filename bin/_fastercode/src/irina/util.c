@@ -122,6 +122,8 @@ char *move2str(MoveBin move, char *str_dest) {
  */
 #ifndef _WIN32
 
+#include <sys/select.h>
+
 /* Linux */
 bool bioskey() {
     fd_set readfds;
