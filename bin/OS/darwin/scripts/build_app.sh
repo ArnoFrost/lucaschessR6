@@ -1,22 +1,23 @@
 #!/bin/bash
-# Build LucasChess.app at repository root (calls bin/run_mac.sh; venv stays external).
+# Build LucasChess.app at repository root (calls bin/OS/darwin/scripts/run.sh; venv stays external).
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-BUILD_DIR="$ROOT/bin/macos/.icon-build"
+ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
+SCRIPTS_DIR="$ROOT/bin/OS/darwin/scripts"
+BUILD_DIR="$SCRIPTS_DIR/.icon-build"
 ICONSET="$BUILD_DIR/LucasChess.iconset"
 APP="$ROOT/LucasChess.app"
 PYTHON="${ROOT}/venv/bin/python"
 
 if [[ ! -x "$PYTHON" ]]; then
-  echo "venv not found. Run bin/run_mac.sh once to create it." >&2
+  echo "venv not found. Run bin/OS/darwin/scripts/run.sh once to create it." >&2
   exit 1
 fi
 
 rm -rf "$BUILD_DIR" "$APP"
 mkdir -p "$BUILD_DIR" "$ICONSET"
 
-"$PYTHON" "$ROOT/bin/macos/export_icon.py" "$BUILD_DIR"
+"$PYTHON" "$SCRIPTS_DIR/export_icon.py" "$BUILD_DIR"
 
 cp "$BUILD_DIR/icon_16x16.png" "$ICONSET/icon_16x16.png"
 cp "$BUILD_DIR/icon_32x32.png" "$ICONSET/icon_16x16@2x.png"
@@ -90,15 +91,16 @@ cat > "$APP/Contents/MacOS/LucasChess" <<'LAUNCHER'
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 LOG="$ROOT/UserData/launch.log"
 BUG="$ROOT/bin/bug.log"
+RUN="$ROOT/bin/OS/darwin/scripts/run.sh"
 mkdir -p "$ROOT/UserData"
 export LUCASCHESS_FROM_APP=1
 export HOME="${HOME:-$(eval echo ~$(id -u))}"
 export PATH="/opt/homebrew/bin:/usr/local/bin:${HOME}/miniforge3/bin:${ROOT}/venv/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 echo "$(date '+%Y-%m-%d %H:%M:%S') app launcher pid=$$ root=$ROOT" >> "$LOG"
-xattr -cr "$ROOT/bin/run_mac.sh" "$ROOT/venv/bin" 2>/dev/null || true
-chmod +x "$ROOT/bin/run_mac.sh" 2>/dev/null || true
+xattr -cr "$RUN" "$ROOT/bin/run_mac.sh" "$ROOT/venv/bin" 2>/dev/null || true
+chmod +x "$RUN" "$ROOT/bin/run_mac.sh" 2>/dev/null || true
 /usr/bin/osascript -e 'display notification "正在启动，请稍候…" with title "Lucas Chess"' 2>/dev/null || true
-/bin/bash "$ROOT/bin/run_mac.sh" "$@"
+/bin/bash "$RUN" "$@"
 code=$?
 if [[ "$code" -ne 0 ]]; then
   echo "$(date '+%Y-%m-%d %H:%M:%S') app launcher exit code=$code" >> "$LOG"

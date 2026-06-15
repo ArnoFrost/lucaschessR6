@@ -51,7 +51,7 @@ This fork (`feat/macos-mvp`) adds lightweight macOS support on top of upstream L
 git clone https://github.com/ArnoFrost/lucaschessR6.git
 cd lucaschessR6
 git checkout feat/macos-mvp
-./bin/run_mac.sh
+./bin/OS/darwin/scripts/run.sh
 ```
 
 First run creates `venv/`, installs dependencies, and builds `FasterCode` if needed.
@@ -60,9 +60,9 @@ First run creates `venv/`, installs dependencies, and builds `FasterCode` if nee
 
 | Method | How |
 |--------|-----|
-| Terminal | `./bin/run_mac.sh` |
+| Terminal | `./bin/OS/darwin/scripts/run.sh` (or `./bin/run_mac.sh` wrapper) |
 | Double-click | `LucasChess.command` (opens Terminal) |
-| App bundle | Run `bin/macos/build_app.sh`, then open `LucasChess.app` |
+| App bundle | Run `bin/OS/darwin/scripts/build_app.sh`, then open `LucasChess.app` |
 
 Drag `LucasChess.app` to **Applications** or the **Dock** for a native icon and one-click launch.
 

@@ -1,9 +1,10 @@
 #!/bin/bash
 # Build LucasChess.app, clear quarantine, and open it.
 set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
+SCRIPTS_DIR="$ROOT/bin/OS/darwin/scripts"
 cd "$ROOT"
-"$ROOT/bin/macos/build_app.sh"
+"$SCRIPTS_DIR/build_app.sh"
 xattr -cr "$ROOT/LucasChess.app" 2>/dev/null || true
 chmod +x "$ROOT/LucasChess.app/Contents/MacOS/LucasChess"
 codesign --force -s - "$ROOT/LucasChess.app/Contents/MacOS/LucasChess" 2>/dev/null || true

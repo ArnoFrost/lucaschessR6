@@ -8,7 +8,7 @@ echo "Lucas Chess 启动中…"
 echo "若未见窗口，请按 ⌘Tab 切换到 Python 或 Lucas Chess。"
 echo ""
 
-/bin/bash ./bin/run_mac.sh "$@"
+/bin/bash ./bin/OS/darwin/scripts/run.sh "$@"
 code=$?
 
 if [[ "$code" -ne 0 ]]; then

@@ -1,7 +1,7 @@
 UserData/
 venv/
 LucasChess.app
-bin/macos/.icon-build/
+bin/OS/darwin/scripts/.icon-build/
 __pycache__/
 *.pyc
 bin/_fastercode/src/build/

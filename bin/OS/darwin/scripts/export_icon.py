@@ -11,7 +11,7 @@ def main() -> int:
     parser.add_argument("output_dir", help="Directory to write icon_*.png files")
     args = parser.parse_args()
 
-    bin_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    bin_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
     os.chdir(bin_dir)
     sys.argv[0] = os.path.join(bin_dir, "LucasR.py")
     sys.path.insert(0, bin_dir)
