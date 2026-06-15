@@ -72,6 +72,29 @@ Drag `LucasChess.app` to **Applications** or the **Dock** for a native icon and 
 
 Main-window shortcuts use **⌘ (Command)** instead of Ctrl (e.g. ⌘0 copy variation, ⌘1/⌘2 toolbar actions). Board copy/flip and grid paste also accept ⌘. Custom shortcut slots use **⌘+Shift+1~9** (Windows: Alt+1~9). Option (⌥) shortcuts such as ⌥+A analyze remain unchanged.
 
+**Chess engines on Mac**
+
+Linux/Windows engine binaries (ELF/PE) cannot run on macOS. This fork ships or builds native engines under `bin/OS/darwin/Engines/`:
+
+| Engine | Role | Notes |
+|--------|------|-------|
+| **Irina** | Default opponent (`x_rival_inicial`) | Child-friendly personalities; build with `build_irina.sh` |
+| **Eguzkilore** | ~1000 Elo weak engine | Built from bundled `src.7z` via `build_eguz.sh` |
+| **Eguzki** | Fixed Elo 1000–2700 (100-step) | Same script; use **Engines with limited elo** in play menu |
+| **Stockfish** | Strong analysis / high Elo | Requires `brew install stockfish` (symlinked by `build_engines.sh`) |
+
+Build or refresh bundled engines:
+
+```bash
+./bin/OS/darwin/scripts/build_engines.sh
+```
+
+Irina alone: `./bin/OS/darwin/scripts/build_irina.sh` (clones [lukasmonk/irina](https://github.com/lukasmonk/irina), compiles arm64, copies `irina.bin` from the Linux tree).
+
+Eguz engines: `./bin/OS/darwin/scripts/build_eguz.sh` (extracts `src.7z` from the Linux tree, compiles arm64, copies `*.bin` books).
+
+Stockfish **UCI_Elo** starts at 1320; sub-1000 training uses Irina personalities. **Eguzki** covers fixed Elo from 1000 upward; **Eguzkilore** is fixed near 1000 Elo.
+
 Important Note for Developers / Cloning
 ---------------------------------------
 

@@ -47,8 +47,16 @@ def read_engines(folder_engines):
     cm.set_uci_option("Threads", "2")
     cm.set_multipv(10, 256)
 
+    mas("irina", "Lucas Monge", "0.21", "https://github.com/lukasmonk/irina", "irina", 1500)
+
+    mas("eguzkilore", "Lucas Monge", "1.0", "", "eguzkilore", 1000)
+    mas("eguzki", "Lucas Monge", "1.0", "", "eguzki", 1500)
+
     return dic_engines
 
 
 def li_engines_fixed_elo() -> tuple:
-    return (("stockfish", 1400, 3100),)
+    return (
+        ("stockfish", 1400, 3100),
+        ("eguzki", 1000, 2700),
+    )

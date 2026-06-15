@@ -296,6 +296,8 @@ class Configuration:
             self._dic_books = {}
 
             def add_folder(folder):
+                if not os.path.isdir(folder):
+                    return
                 entry: os.DirEntry
                 for entry in os.scandir(folder):
                     if entry.is_dir():

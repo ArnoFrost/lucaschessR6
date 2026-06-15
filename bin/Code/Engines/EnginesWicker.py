@@ -20,7 +20,13 @@ def read_wicker_engines():
         li_uci = [v.split(":") for k, v in dic.items() if k.startswith("OPTION")]
         nom_book = dic["BOOK"]
         book_rr = dic.get("BOOKRR", BOOK_RANDOM_UNIFORM)
-        book = configuration.path_book(nom_book)
+        engine = configuration.engines.dic_engines().get(nom_base_engine)
+        if not engine:
+            continue
+        dic_books = configuration.dic_books
+        if nom_book not in dic_books:
+            continue
+        book = dic_books[nom_book]
         max_plies = int(dic.get("BOOKMAXPLY", 0))
         if max_plies == 0:
             if elo >= 2200:
@@ -28,20 +34,18 @@ def read_wicker_engines():
             else:
                 max_plies = round((elo / 1000) + 3.5 * (elo / 1000) * (elo / 1000))
 
-        engine = configuration.engines.dic_engines().get(nom_base_engine)
-        if engine:
-            eng = EnginesMicElo.EngineTourneys()
-            eng.read_engine(engine)
-            eng.name = _SP(alias)
-            eng.id_info = id_info
-            eng.key = alias
-            eng.elo = elo
-            eng.liUCI = li_uci
-            eng.book = book
-            eng.book_max_plies = max_plies
-            eng.book_rr = book_rr
-            eng.type = ENG_WICKER
-            li.append(eng)
+        eng = EnginesMicElo.EngineTourneys()
+        eng.read_engine(engine)
+        eng.name = _SP(alias)
+        eng.id_info = id_info
+        eng.key = alias
+        eng.elo = elo
+        eng.liUCI = li_uci
+        eng.book = book
+        eng.book_max_plies = max_plies
+        eng.book_rr = book_rr
+        eng.type = ENG_WICKER
+        li.append(eng)
 
     li.sort(key=lambda uno: uno.elo)
     return li
