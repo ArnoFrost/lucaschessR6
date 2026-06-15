@@ -105,6 +105,50 @@ def is_windows() -> bool:
     return sys.platform == "win32"
 
 
+def primary_shortcut_mod() -> str:
+    """Qt key-sequence modifier: Meta (⌘) on macOS, Ctrl elsewhere."""
+    return "Meta" if is_macos() else "Ctrl"
+
+
+def shortcut_seq(key: str) -> str:
+    """Platform shortcut like Meta+1 or Ctrl+1."""
+    return f"{primary_shortcut_mod()}+{key}"
+
+
+def shortcut_label_mod() -> str:
+    """Human-readable modifier for menu labels."""
+    return "⌘" if is_macos() else "Ctrl"
+
+
+def macos_bring_to_front(window) -> None:
+    """Raise Qt window when launched from .app (Finder does not auto-focus)."""
+    if not is_macos() or window is None:
+        return
+    from PySide6 import QtWidgets
+
+    window.show()
+    window.raise_()
+    window.activateWindow()
+    app = QtWidgets.QApplication.instance()
+    if app:
+        app.processEvents()
+    try:
+        pid = os.getpid()
+        subprocess.run(
+            [
+                "osascript",
+                "-e",
+                f'tell application "System Events" to set frontmost of '
+                f'(first process whose unix id is {pid}) to true',
+            ],
+            check=False,
+            capture_output=True,
+            timeout=3,
+        )
+    except Exception:
+        pass
+
+
 def create_folder(folder: Union[str, Path]) -> bool:
     folder_path = Path(folder)
     try:

@@ -36,6 +36,9 @@ def run_gui(procesador):
         os.environ["QT_QPA_PLATFORM"] = "xcb"
         # sudo apt install libxcb-cursor0  en Wayland
 
+    if Util.is_macos():
+        os.environ.setdefault("QT_MAC_WANTS_LAYER", "1")
+
     main_config = Configuration.Configuration("")
     main_config.lee()
 
@@ -45,6 +48,8 @@ def run_gui(procesador):
     QtWidgets.QApplication.setHighDpiScaleFactorRoundingPolicy(QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
     app = QtWidgets.QApplication([])
+    app.setApplicationName("Lucas Chess")
+    app.setOrganizationName("Lucas Monge")
     app.setEffectEnabled(QtCore.Qt.UIEffect.UI_FadeMenu, True)  # Agregar
 
     # filtro = GlobalFilter()
@@ -97,8 +102,12 @@ def run_gui(procesador):
         app.installTranslator(translator)
 
     InitApp.init_app_style(app, configuration)
+    app.setWindowIcon(Iconos.Aplicacion64())
 
     procesador.iniciar_gui()
+
+    if Util.is_macos() and Code.main_window:
+        QtCore.QTimer.singleShot(300, lambda: Util.macos_bring_to_front(Code.main_window))
 
     Code.garbage_collector = GarbageCollector.GarbageCollector()
     Code.garbage_collector.start()

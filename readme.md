@@ -33,6 +33,45 @@ Dependencies
 * certifi
 * beautifulsoup4
 
+macOS (this fork)
+-----------------
+
+This fork (`feat/macos-mvp`) adds lightweight macOS support on top of upstream Lucas Chess R6.
+
+**Requirements**
+
+* macOS 11+
+* Python 3.12 (Homebrew: `brew install python@3.12`)
+* Stockfish for the built-in engine: `brew install stockfish`
+* Git LFS (see below)
+
+**Quick start**
+
+```bash
+git clone https://github.com/ArnoFrost/lucaschessR6.git
+cd lucaschessR6
+git checkout feat/macos-mvp
+./bin/run_mac.sh
+```
+
+First run creates `venv/`, installs dependencies, and builds `FasterCode` if needed.
+
+**Launch options**
+
+| Method | How |
+|--------|-----|
+| Terminal | `./bin/run_mac.sh` |
+| Double-click | `LucasChess.command` (opens Terminal) |
+| App bundle | Run `bin/macos/build_app.sh`, then open `LucasChess.app` |
+
+Drag `LucasChess.app` to **Applications** or the **Dock** for a native icon and one-click launch.
+
+**Note:** `LucasChess.app` must stay inside the repository folder (it launches the project via relative path). The first launch from `.app` may rebuild the Python venv with embedded binaries (~1–2 min) — wait for the notification. If `.app` is blocked by macOS, run: `xattr -cr LucasChess.app`
+
+**Keyboard shortcuts on Mac**
+
+Main-window shortcuts use **⌘ (Command)** instead of Ctrl (e.g. ⌘0 shortcuts menu, ⌘1/⌘2 toolbar actions).
+
 Important Note for Developers / Cloning
 ---------------------------------------
 

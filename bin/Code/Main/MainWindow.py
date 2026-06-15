@@ -6,6 +6,7 @@ from Code.Board import Eboard
 from Code.Main import WBase, WInformation
 from Code.QT import Colocacion, Iconos, LCDialog, QTUtils, ScreenUtils
 from Code.Translations import WorkTranslate
+from Code.Z import Util
 
 
 class MainWindow(LCDialog.LCDialog):
@@ -59,16 +60,16 @@ class MainWindow(LCDialog.LCDialog):
 
         self.setLayout(ly)
 
-        ctrl1: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+1"), self)
+        ctrl1: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence(Util.shortcut_seq("1")), self)
         ctrl1.activated.connect(self.pressed_shortcut_ctrl1)
 
-        ctrl2: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+2"), self)
+        ctrl2: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence(Util.shortcut_seq("2")), self)
         ctrl2.activated.connect(self.pressed_shortcut_ctrl2)
 
         alt_a: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence("Alt+A"), self)
         alt_a.activated.connect(self.pressed_shortcut_alt_a)
 
-        ctrl_0: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+0"), self)
+        ctrl_0: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence(Util.shortcut_seq("0")), self)
         ctrl_0.activated.connect(self.pressed_shortcut_ctrl0)
 
         alt_m: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence("Alt+M"), self)
@@ -201,6 +202,7 @@ class MainWindow(LCDialog.LCDialog):
             self.xrestore_video()
             self.adjust_size()
             self.show()
+            Util.macos_bring_to_front(self)
 
         self.set_title()
 

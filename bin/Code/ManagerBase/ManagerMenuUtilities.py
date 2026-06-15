@@ -41,7 +41,7 @@ class ManagerMenuUtilities(ManagerMenu.ManagerMenu):
 
         menu_save = menu.submenu(_("Save"), ico_grabar)
 
-        key_ctrl = "Ctrl" if self.configuration.x_copy_ctrl else "Alt"
+        key_ctrl = Util.shortcut_label_mod() if self.configuration.x_copy_ctrl else "Alt"
         menu_pgn = menu_save.submenu(_("PGN Format"), Iconos.PGN())
         menu_pgn.opcion("pgnfile", tr_fichero, Iconos.GrabarFichero())
         menu_pgn.separador()
@@ -120,7 +120,7 @@ class ManagerMenuUtilities(ManagerMenu.ManagerMenu):
                 "play_instead_of_me",
                 _("Play instead of me"),
                 Iconos.JuegaPorMi(),
-                shortcut="Ctrl+1",
+                shortcut=Util.shortcut_seq("1"),
             )
 
         if self.manager.active_help_to_move():
@@ -130,7 +130,7 @@ class ManagerMenuUtilities(ManagerMenu.ManagerMenu):
                     "help_to_move",
                     _("Help to move"),
                     Iconos.BotonAyuda(),
-                    shortcut="Ctrl+2",
+                    shortcut=Util.shortcut_seq("2"),
                 )
 
         # Arbol de movimientos
