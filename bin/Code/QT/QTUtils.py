@@ -1,6 +1,8 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 from shiboken6 import isValid
 
+from Code.Z import Util
+
 
 def refresh_gui():
     """
@@ -84,6 +86,27 @@ def is_shift_pressed() -> bool:
 def is_alt_pressed() -> bool:
     modifiers = QtWidgets.QApplication.keyboardModifiers()
     return (modifiers.value & QtCore.Qt.KeyboardModifier.AltModifier.value) > 0
+
+
+def is_meta_pressed() -> bool:
+    modifiers = QtWidgets.QApplication.keyboardModifiers()
+    return (modifiers.value & QtCore.Qt.KeyboardModifier.MetaModifier.value) > 0
+
+
+def is_primary_mod_pressed() -> bool:
+    if Util.is_macos():
+        return is_control_pressed() or is_meta_pressed()
+    return is_control_pressed()
+
+
+def is_custom_shortcut_mod(event_modifiers: QtCore.Qt.KeyboardModifier) -> bool:
+    """True when modifiers match custom shortcut slot trigger (Alt+1..9 or ⌘⇧+1..9)."""
+    m = event_modifiers.value
+    if Util.is_macos():
+        meta = QtCore.Qt.KeyboardModifier.MetaModifier.value
+        shift = QtCore.Qt.KeyboardModifier.ShiftModifier.value
+        return (m & meta) > 0 and (m & shift) > 0
+    return (m & QtCore.Qt.KeyboardModifier.AltModifier.value) > 0
 
 
 def deferred_call(mstime: int, called):

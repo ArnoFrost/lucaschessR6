@@ -95,7 +95,7 @@ class ManagerMenuUtilities(ManagerMenu.ManagerMenu):
             submenu = menu.submenu(_("Analysis"), Iconos.Analizar())
 
             has_analysis = self.game.has_analisis()
-            submenu.opcion("analizar", _("Analyze"), Iconos.Analizar(), shortcut="Alt+A")
+            submenu.opcion("analizar", _("Analyze"), Iconos.Analizar(), shortcut=Util.shortcut_menu_alt("A"))
             if has_analysis:
                 submenu.separador()
                 submenu.opcion("analizar_grafico", _("Show graphics"), Iconos.Estadisticas())
@@ -136,10 +136,10 @@ class ManagerMenuUtilities(ManagerMenu.ManagerMenu):
         # Arbol de movimientos
         if with_tree:
             menu.separador()
-            menu.opcion("arbol", _("Moves tree"), Iconos.Arbol(), shortcut="Alt+M")
+            menu.opcion("arbol", _("Moves tree"), Iconos.Arbol(), shortcut=Util.shortcut_menu_alt("M"))
 
         menu.separador()
-        menu.opcion("play", _("Play current position"), Iconos.MoverJugar(), shortcut="Alt+X")
+        menu.opcion("play", _("Play current position"), Iconos.MoverJugar(), shortcut=Util.shortcut_menu_alt("X"))
 
         # Hints
         menu.separador()

@@ -120,6 +120,54 @@ def shortcut_label_mod() -> str:
     return "⌘" if is_macos() else "Ctrl"
 
 
+def shortcut_label_alt() -> str:
+    """Human-readable Alt/Option modifier for menu labels."""
+    return "⌥" if is_macos() else "Alt"
+
+
+def shortcut_menu_alt(key: str) -> str:
+    """Menu label for Alt+key shortcuts (Option on macOS)."""
+    return f"{shortcut_label_alt()}+{key.upper()}"
+
+
+def shortcut_menu_primary(key: str, *, shift: bool = False) -> str:
+    """Menu label for primary-modifier shortcuts (⌘/Ctrl)."""
+    mod = shortcut_label_mod()
+    if shift:
+        return f"{mod}+Shift+{key.upper()}"
+    return f"{mod}+{key.upper()}"
+
+
+def shortcut_seq_shift(key: str) -> str:
+    """Platform shortcut with Shift, e.g. Meta+Shift+1 on macOS."""
+    return f"{primary_shortcut_mod()}+Shift+{key}"
+
+
+def shortcut_custom_num(n: int) -> str:
+    """Qt key sequence for custom shortcut slot n (1-9)."""
+    if is_macos():
+        return shortcut_seq_shift(str(n))
+    return f"Alt+{n}"
+
+
+def shortcut_custom_num_label(n: int) -> str:
+    """Human-readable label for custom shortcut slot n."""
+    if is_macos():
+        return f"{shortcut_label_mod()}+Shift+{n}"
+    return f"Alt+{n}"
+
+
+def is_primary_mod_flags(flags: int) -> bool:
+    """True when primary modifier held: Ctrl (Win/Linux) or ⌘/Ctrl on macOS."""
+    from PySide6 import QtCore
+
+    is_ctrl = (flags & QtCore.Qt.KeyboardModifier.ControlModifier.value) > 0
+    if not is_macos():
+        return is_ctrl
+    is_meta = (flags & QtCore.Qt.KeyboardModifier.MetaModifier.value) > 0
+    return is_ctrl or is_meta
+
+
 def macos_bring_to_front(window) -> None:
     """Raise Qt window when launched from .app (Finder does not auto-focus)."""
     if not is_macos() or window is None:

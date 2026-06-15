@@ -23,6 +23,7 @@ siempre que la rutina se haya definido en la ventana:
 from PySide6 import QtCore, QtGui, QtWidgets
 
 from Code.QT import QTMessages
+from Code.Z import Util
 
 
 class ControlGrid(QtCore.QAbstractTableModel):
@@ -428,6 +429,8 @@ class Grid(QtWidgets.QTableView):
         m = event.modifiers().value
         is_shift = (m & QtCore.Qt.KeyboardModifier.ShiftModifier.value) > 0
         is_control = (m & QtCore.Qt.KeyboardModifier.ControlModifier.value) > 0
+        if Util.is_macos():
+            is_control = is_control or (m & QtCore.Qt.KeyboardModifier.MetaModifier.value) > 0
         is_alt = (m & QtCore.Qt.KeyboardModifier.AltModifier.value) > 0
 
         if is_alt and k == QtCore.Qt.Key.Key_R:

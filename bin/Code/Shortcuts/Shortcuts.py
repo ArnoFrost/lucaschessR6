@@ -145,7 +145,7 @@ class Shortcuts:
     def _format_label_and_shortcut(label: str, alt: int, with_add: bool) -> tuple[str, Optional[str], int]:
         shortcut_text: Optional[str]
         if alt <= 9 and with_add:
-            shortcut_text = f"ALT+{alt}"
+            shortcut_text = Util.shortcut_custom_num_label(alt)
             alt += 1
         else:
             if alt <= 9 and Util.is_windows():

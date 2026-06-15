@@ -664,7 +664,7 @@ class WBase(QtWidgets.QWidget):
         k = event.key()
         if self.with_shortcuts:
             if 49 <= k <= 57:
-                if QTUtils.is_alt_pressed():
+                if QTUtils.is_custom_shortcut_mod(event.modifiers()):
                     self.launch_shortcut_with_alt(k - 48)
                     return
         self.key_pressed("V", event.key())

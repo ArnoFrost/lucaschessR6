@@ -75,6 +75,11 @@ class MainWindow(LCDialog.LCDialog):
         alt_m: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence("Alt+M"), self)
         alt_m.activated.connect(self.pressed_shortcut_alt_m)
 
+        if Util.is_macos():
+            for num in range(1, 10):
+                custom_sc = QtGui.QShortcut(QtGui.QKeySequence(Util.shortcut_custom_num(num)), self)
+                custom_sc.activated.connect(lambda n=num: self.pressed_shortcut_custom(n))
+
         f11: QtGui.QShortcut = QtGui.QShortcut(QtGui.QKeySequence("F11"), self)
         f11.activated.connect(self.pressed_shortcut_f11)
         self.activadoF11 = False
@@ -477,6 +482,10 @@ class MainWindow(LCDialog.LCDialog):
     def pressed_shortcut_alt_m(self):
         if self.manager and hasattr(self.manager, "arbol"):
             self.manager.arbol()
+
+    def pressed_shortcut_custom(self, num: int):
+        if hasattr(self.base, "launch_shortcut_with_alt"):
+            self.base.launch_shortcut_with_alt(num)
 
     def cursor_out_board(self):
         p = self.mapToParent(self.board.pos())

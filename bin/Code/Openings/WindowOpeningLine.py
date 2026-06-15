@@ -150,8 +150,7 @@ class WLines(LCDialog.LCDialog):
     def keyPressEvent(self, event):
         k = event.key()
         if 49 <= k <= 57:
-            m = event.modifiers().value
-            if (m & QtCore.Qt.KeyboardModifier.AltModifier.value) > 0:
+            if QTUtils.is_custom_shortcut_mod(event.modifiers()):
                 self.shortcuts.launch_shortcut_with_alt(k - 48)
                 return
 
@@ -193,7 +192,7 @@ class WLines(LCDialog.LCDialog):
 
     def utilities(self):
         menu = QTDialogs.LCMenu(self)
-        menu.opcion(self.ta_massive, _("Mass analysis"), Iconos.Analizar(), shortcut="Alt+A")
+        menu.opcion(self.ta_massive, _("Mass analysis"), Iconos.Analizar(), shortcut=Util.shortcut_menu_alt("A"))
         menu.separador()
         menu.opcion(self.ta_transpositions, _("Complete with transpositions"), Iconos.Arbol())
         menu.separador()
@@ -1132,8 +1131,9 @@ class WLines(LCDialog.LCDialog):
         elif is_control and k == QtCore.Qt.Key.Key_V:
             self.import_pastepgn(self.gamebase)
 
-        elif is_alt and QtCore.Qt.Key.Key_1 <= k <= QtCore.Qt.Key.Key_9:
-            self.shortcuts.launch_shortcut_with_alt(k - QtCore.Qt.Key.Key_0)
+        elif QtCore.Qt.Key.Key_1 <= k <= QtCore.Qt.Key.Key_9:
+            if QTUtils.is_custom_shortcut_mod(QtWidgets.QApplication.keyboardModifiers()):
+                self.shortcuts.launch_shortcut_with_alt(k - QtCore.Qt.Key.Key_0)
 
     def grid_doble_click(self, _grid, _row, _obj_column):
         game = self.game_actual()

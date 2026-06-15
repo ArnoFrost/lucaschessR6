@@ -305,10 +305,11 @@ class Board(QtWidgets.QGraphicsView):
         is_alt = (flags & QtCore.Qt.KeyboardModifier.AltModifier.value) > 0
         is_shift = (flags & QtCore.Qt.KeyboardModifier.ShiftModifier.value) > 0
         is_ctrl = (flags & QtCore.Qt.KeyboardModifier.ControlModifier.value) > 0
+        is_primary = Util.is_primary_mod_flags(flags)
 
         okseguir = False
 
-        if is_alt or is_ctrl:
+        if is_alt or is_primary:
             if key == Qt.Key.Key_O and is_alt:
                 if hasattr(self.main_window, "manager") and hasattr(
                         self.main_window.manager.main_window, "pressed_shortcut_alt_o"
@@ -318,7 +319,7 @@ class Board(QtWidgets.QGraphicsView):
 
             # CTRL-C/ : copy fen al clipboard
             if key == Qt.Key.Key_C:
-                if (self.configuration.x_copy_ctrl and is_ctrl) or (not self.configuration.x_copy_ctrl and is_alt):
+                if (self.configuration.x_copy_ctrl and is_primary) or (not self.configuration.x_copy_ctrl and is_alt):
                     if is_shift:
                         if hasattr(self.main_window, "manager") and hasattr(
                                 self.main_window.manager, "save_pgn_clipboard"
@@ -335,10 +336,10 @@ class Board(QtWidgets.QGraphicsView):
             elif is_alt and key == Qt.Key.Key_Y:
                 self.blindfold_change()
 
-            elif is_ctrl and key == Qt.Key.Key_Y:
+            elif is_primary and key == Qt.Key.Key_Y:
                 self.blindfold_config()
 
-            elif is_ctrl and (key in (Qt.Key.Key_Plus, Qt.Key.Key_Minus)):
+            elif is_primary and (key in (Qt.Key.Key_Plus, Qt.Key.Key_Minus)):
                 ap = self.config_board.width_piece()
                 ap += 2 * (1 if key == Qt.Key.Key_Plus else -1)
                 if ap >= 10:
@@ -347,7 +348,7 @@ class Board(QtWidgets.QGraphicsView):
                     self.width_changed()
                     return
 
-            elif is_ctrl and key == Qt.Key.Key_T:
+            elif is_primary and key == Qt.Key.Key_T:
                 resp = DBgames.save_selected_position(self.last_position)
                 if not resp.ok:
                     QTMessages.message_error(self, resp.mens_error)
@@ -358,11 +359,11 @@ class Board(QtWidgets.QGraphicsView):
                         1.8,
                     )
 
-            elif (is_alt or is_ctrl) and key == Qt.Key.Key_F:
+            elif (is_alt or is_primary) and key == Qt.Key.Key_F:
                 self.try_to_rotate_the_board(None)
 
             elif key == Qt.Key.Key_I:
-                self.save_as_img(is_ctrl=is_ctrl, is_alt=is_alt)
+                self.save_as_img(is_ctrl=is_primary, is_alt=is_alt)
                 QTMessages.temporary_message(self.main_window, _("Board image is in clipboard"), 1.2)
 
             elif key == Qt.Key.Key_J:
@@ -373,7 +374,7 @@ class Board(QtWidgets.QGraphicsView):
                         "png",
                         False,
                 ):
-                    self.save_as_img(path, "png", is_ctrl=is_ctrl, is_alt=is_alt)
+                    self.save_as_img(path, "png", is_ctrl=is_primary, is_alt=is_alt)
                     self.configuration.set_save_folder(os.path.dirname(path))
 
             elif is_alt and key == Qt.Key.Key_K:
@@ -955,9 +956,9 @@ class Board(QtWidgets.QGraphicsView):
             def get_shortcut(self):
                 li_alt = []
                 if self.is_ctrl:
-                    li_alt.append("Ctrl")
+                    li_alt.append(Util.shortcut_label_mod())
                 if self.is_alt:
-                    li_alt.append("Alt")
+                    li_alt.append(Util.shortcut_label_alt())
                 if self.is_shift:
                     li_alt.append("Shift")
                 li_alt.append(self.key)

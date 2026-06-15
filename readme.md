@@ -70,7 +70,7 @@ Drag `LucasChess.app` to **Applications** or the **Dock** for a native icon and 
 
 **Keyboard shortcuts on Mac**
 
-Main-window shortcuts use **⌘ (Command)** instead of Ctrl (e.g. ⌘0 shortcuts menu, ⌘1/⌘2 toolbar actions).
+Main-window shortcuts use **⌘ (Command)** instead of Ctrl (e.g. ⌘0 copy variation, ⌘1/⌘2 toolbar actions). Board copy/flip and grid paste also accept ⌘. Custom shortcut slots use **⌘+Shift+1~9** (Windows: Alt+1~9). Option (⌥) shortcuts such as ⌥+A analyze remain unchanged.
 
 Important Note for Developers / Cloning
 ---------------------------------------

@@ -8,6 +8,7 @@ from Code.Base.Constantes import (
 from Code.Engines import WConfEngines, WExternalEngines
 from Code.ManagerBase import ManagerMenu
 from Code.QT import FormLayout, Iconos, QTDialogs
+from Code.Z import Util
 
 
 class ManagerMenuConfig(ManagerMenu.ManagerMenu):
@@ -27,9 +28,9 @@ class ManagerMenuConfig(ManagerMenu.ManagerMenu):
             else:
                 ico = Iconos.Verde()
                 tit = _("Enable")
-            menu_cg.opcion("cg_change", tit, ico, shortcut="Alt+Y")
+            menu_cg.opcion("cg_change", tit, ico, shortcut=Util.shortcut_menu_alt("Y"))
             menu_cg.separador()
-            menu_cg.opcion("cg_conf", _("Configuration"), Iconos.Opciones(), shortcut="CTRL+Y")
+            menu_cg.opcion("cg_conf", _("Configuration"), Iconos.Opciones(), shortcut=Util.shortcut_menu_primary("Y"))
             menu_cg.separador()
             menu_cg.opcion(
                 "cg_pgn",
